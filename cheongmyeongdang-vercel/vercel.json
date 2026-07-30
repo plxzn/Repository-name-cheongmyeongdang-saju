@@ -1,0 +1,3 @@
+{
+  "functions": { "api/fortune.js": { "maxDuration": 30 } }
+}
