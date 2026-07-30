@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>청명당(淸明堂) · AI 사주연구소</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14161b;
+    --ink-2:#1c1f26;
+    --ink-3:#262a33;
+    --paper:#efe8d8;
+    --paper-2:#e6ddc7;
+    --gold:#c9a227;
+    --gold-soft:#d9bd6a;
+    --wood:#4a7a56;
+    --fire:#b8432f;
+    --earth:#c9a227;
+    --metal:#b9b09a;
+    --water:#3a6b8c;
+    --text:#f1ece0;
+    --text-dim:#9a9789;
+    --ink-text:#20211d;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:'Noto Sans KR', sans-serif;
+    font-weight:300;
+    line-height:1.7;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.serif{ font-family:'Noto Serif KR', serif; }
+  .wrap{ max-width:1080px; margin:0 auto; padding:0 24px; }
+  a{ color:inherit; }
+
+  /* header */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(20,22,27,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(201,162,39,0.18);
+  }
+  .nav{ display:flex; align-items:center; justify-content:space-between; padding:18px 24px; max-width:1080px; margin:0 auto;}
+  .brand{ font-family:'Noto Serif KR',serif; font-weight:700; font-size:20px; letter-spacing:1px; }
+  .brand .hanja{ color:var(--gold); font-size:15px; margin-left:6px; font-weight:500;}
+  .nav-cta{
+    border:1px solid var(--gold); color:var(--gold);
+    padding:9px 18px; border-radius:100px; font-size:13px; text-decoration:none;
+    transition:.25s;
+  }
+  .nav-cta:hover{ background:var(--gold); color:var(--ink); }
+
+  /* hero */
+  .hero{
+    position:relative;
+    padding:100px 24px 120px;
+    text-align:center;
+    overflow:hidden;
+  }
+  .hero-wheel{
+    position:absolute; top:50%; left:50%;
+    width:900px; height:900px;
+    transform:translate(-50%,-50%);
+    opacity:.14;
+    animation:spin 140s linear infinite;
+    pointer-events:none;
+  }
+  @keyframes spin{ from{transform:translate(-50%,-50%) rotate(0deg);} to{transform:translate(-50%,-50%) rotate(360deg);} }
+  .eyebrow{
+    display:inline-block; font-size:13px; letter-spacing:4px; color:var(--gold-soft);
+    margin-bottom:22px; text-transform:uppercase; position:relative; z-index:2;
+  }
+  .hero h1{
+    font-size:clamp(34px,6vw,64px); font-weight:900; line-height:1.28; position:relative; z-index:2;
+  }
+  .hero h1 .accent{ color:var(--gold); }
+  .hero p{
+    max-width:520px; margin:26px auto 40px; color:var(--text-dim); font-size:16px; position:relative; z-index:2;
+  }
+  .btn-primary{
+    display:inline-block; background:var(--gold); color:var(--ink-text);
+    font-weight:700; padding:16px 38px; border-radius:100px; text-decoration:none;
+    font-size:15px; letter-spacing:.5px; position:relative; z-index:2;
+    box-shadow:0 8px 30px rgba(201,162,39,0.25);
+    transition:.25s;
+  }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 12px 34px rgba(201,162,39,0.35); }
+
+  /* section titles */
+  .section{ padding:90px 24px; }
+  .section-head{ text-align:center; margin-bottom:56px; }
+  .section-head .tag{ color:var(--gold-soft); font-size:13px; letter-spacing:3px; text-transform:uppercase; }
+  .section-head h2{ font-size:clamp(26px,4vw,38px); margin-top:14px; font-weight:700; }
+  .section-head p{ color:var(--text-dim); margin-top:14px; font-size:15px; }
+
+  /* five element feature cards */
+  .grid5{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; max-width:1080px; margin:0 auto;}
+  .ecard{
+    background:var(--ink-2); border:1px solid var(--ink-3); border-radius:18px;
+    padding:28px 22px; position:relative; overflow:hidden;
+  }
+  .ecard::before{
+    content:''; position:absolute; top:0; left:0; width:100%; height:4px; background:var(--c);
+  }
+  .ecard .hj{ font-family:'Noto Serif KR',serif; font-size:34px; color:var(--c); font-weight:900;}
+  .ecard h3{ margin-top:14px; font-size:17px; font-weight:700; }
+  .ecard p{ margin-top:8px; font-size:13.5px; color:var(--text-dim); }
+
+  /* form */
+  .form-card{
+    background:var(--paper); color:var(--ink-text); border-radius:26px;
+    max-width:640px; margin:0 auto; padding:48px 40px;
+    box-shadow:0 30px 70px rgba(0,0,0,0.35);
+  }
+  .form-card h3{ font-size:24px; font-weight:700; text-align:center; }
+  .form-card .sub{ text-align:center; color:#6b6656; font-size:13.5px; margin-top:8px; margin-bottom:30px;}
+  .field{ margin-bottom:20px; }
+  .field label{ display:block; font-size:13px; font-weight:700; margin-bottom:8px; color:#4a4636; }
+  .field input, .field select{
+    width:100%; padding:13px 16px; border-radius:10px; border:1.5px solid #d8cfb2;
+    background:#fbf8f0; font-family:'Noto Sans KR',sans-serif; font-size:14.5px; color:var(--ink-text);
+  }
+  .field input:focus, .field select:focus{ outline:none; border-color:var(--gold); }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .radio-group{ display:flex; gap:10px; }
+  .radio-opt{
+    flex:1; text-align:center; padding:12px; border-radius:10px; border:1.5px solid #d8cfb2;
+    background:#fbf8f0; cursor:pointer; font-size:14px; font-weight:500; transition:.2s;
+  }
+  .radio-opt.active{ background:var(--gold); border-color:var(--gold); color:var(--ink-text); font-weight:700; }
+  .check-line{ display:flex; align-items:center; gap:8px; font-size:13px; color:#6b6656; margin-top:-6px; margin-bottom:20px;}
+  .submit-btn{
+    width:100%; padding:16px; border:none; border-radius:12px; background:var(--ink);
+    color:var(--gold-soft); font-weight:700; font-size:15.5px; cursor:pointer; letter-spacing:.5px;
+    transition:.2s;
+  }
+  .submit-btn:hover{ background:#000; }
+  .submit-btn:disabled{ opacity:.6; cursor:wait; }
+  .note{ text-align:center; font-size:11.5px; color:#948e77; margin-top:16px; }
+
+  /* results */
+  #results{ display:none; }
+  .pillars-wrap{ max-width:760px; margin:0 auto 50px; }
+  .pillars-table{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .pillar-col{ text-align:center; }
+  .pillar-label{ font-size:12px; color:var(--text-dim); margin-bottom:10px; letter-spacing:2px;}
+  .pillar-cell{
+    border-radius:14px; padding:18px 6px; margin-bottom:8px; background:var(--ink-2);
+    border:1px solid var(--ink-3);
+  }
+  .pillar-cell .hj{ font-family:'Noto Serif KR',serif; font-size:30px; font-weight:900; }
+  .pillar-cell .kr{ font-size:11px; color:var(--text-dim); margin-top:4px; }
+
+  .elements-bar{ display:flex; gap:6px; max-width:760px; margin:26px auto 0; height:14px; border-radius:100px; overflow:hidden; }
+  .elements-legend{ display:flex; justify-content:center; gap:18px; margin-top:14px; flex-wrap:wrap; }
+  .legend-item{ font-size:12px; color:var(--text-dim); display:flex; align-items:center; gap:6px; }
+  .legend-dot{ width:9px; height:9px; border-radius:50%; }
+
+  .report-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; max-width:1000px; margin:50px auto 0; }
+  .report-card{ background:var(--ink-2); border:1px solid var(--ink-3); border-radius:18px; padding:26px; }
+  .report-card .rc-tag{ font-size:12px; letter-spacing:2px; color:var(--gold-soft); text-transform:uppercase;}
+  .report-card h4{ font-size:18px; margin-top:8px; margin-bottom:12px; font-weight:700; }
+  .report-card p{ font-size:14px; color:#cfcabd; }
+  .report-card.wide{ grid-column: 1 / -1; background:linear-gradient(135deg, var(--ink-3), var(--ink-2)); }
+
+  .loading-box{ text-align:center; padding:40px 0; display:none; }
+  .spinner{
+    width:34px; height:34px; border-radius:50%; border:3px solid rgba(201,162,39,0.2);
+    border-top-color:var(--gold); margin:0 auto 16px; animation:rot 0.9s linear infinite;
+  }
+  @keyframes rot{ to{ transform:rotate(360deg); } }
+  .loading-text{ color:var(--text-dim); font-size:13.5px; }
+
+  footer{
+    text-align:center; padding:50px 24px; color:var(--text-dim); font-size:12px; border-top:1px solid var(--ink-3);
+  }
+  footer .fbrand{ font-family:'Noto Serif KR',serif; color:var(--gold-soft); font-size:15px; margin-bottom:10px; }
+
+  @media (max-width:600px){
+    .row2{ grid-template-columns:1fr; }
+    .pillars-table{ grid-template-columns:repeat(2,1fr); }
+    .form-card{ padding:36px 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">淸明堂<span class="hanja">청명당 · 사주연구소</span></div>
+    <a href="#form" class="nav-cta">사주 보기</a>
+  </div>
+</header>
+
+<section class="hero">
+  <svg class="hero-wheel" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="200" cy="200" r="188" fill="none" stroke="#c9a227" stroke-width="1"/>
+    <g font-family="Noto Serif KR" font-size="64" font-weight="900" text-anchor="middle" dominant-baseline="middle">
+      <text x="200" y="55" fill="#4a7a56">木</text>
+      <text x="345" y="140" fill="#b8432f">火</text>
+      <text x="290" y="320" fill="#c9a227">土</text>
+      <text x="110" y="320" fill="#b9b09a">金</text>
+      <text x="55" y="140" fill="#3a6b8c">水</text>
+    </g>
+  </svg>
+  <div class="eyebrow">AI 사주 · 오행 분석 · 신년운세</div>
+  <h1>태어난 순간에 새겨진<br><span class="accent">여덟 글자</span>를 읽습니다</h1>
+  <p>생년월일시를 입력하면 AI가 사주팔자와 오행의 흐름을 분석해<br class="hide-mobile"> 성격, 재물운, 애정운, 건강운, 신년운세까지 정리한 리포트를 만들어드립니다.</p>
+  <a href="#form" class="btn-primary">무료로 내 사주 보기</a>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <div class="tag">What You'll Learn</div>
+    <h2>오행(五行)으로 풀어보는 나</h2>
+    <p>목·화·토·금·수, 다섯 가지 기운의 균형으로 성향과 흐름을 살펴봅니다.</p>
+  </div>
+  <div class="grid5">
+    <div class="ecard" style="--c:#4a7a56"><div class="hj">木</div><h3>성격과 기질</h3><p>타고난 성정과 강점, 조심해야 할 점</p></div>
+    <div class="ecard" style="--c:#b8432f"><div class="hj">火</div><h3>애정운</h3><p>사람과의 관계, 인연의 흐름</p></div>
+    <div class="ecard" style="--c:#c9a227"><div class="hj">土</div><h3>재물운</h3><p>돈이 모이고 흩어지는 시기</p></div>
+    <div class="ecard" style="--c:#b9b09a"><div class="hj">金</div><h3>건강운</h3><p>몸에 무리가 가는 시기와 관리법</p></div>
+    <div class="ecard" style="--c:#3a6b8c"><div class="hj">水</div><h3>2026 신년운세</h3><p>올 한 해 흐름과 주의할 시기</p></div>
+  </div>
+</section>
+
+<section class="section" id="form">
+  <div class="form-card">
+    <h3>사주 정보 입력</h3>
+    <p class="sub">양력 생년월일 기준으로 입력해주세요.</p>
+
+    <div class="field">
+      <label>이름 (선택)</label>
+      <input type="text" id="f-name" placeholder="예: 홍길동">
+    </div>
+
+    <div class="field">
+      <label>성별</label>
+      <div class="radio-group" id="gender-group">
+        <div class="radio-opt active" data-val="남성">남성</div>
+        <div class="radio-opt" data-val="여성">여성</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>생년월일 (양력)</label>
+      <input type="date" id="f-date" min="1920-01-01" max="2026-12-31">
+    </div>
+
+    <div class="field">
+      <label>태어난 시간</label>
+      <input type="time" id="f-time">
+    </div>
+    <div class="check-line">
+      <input type="checkbox" id="f-notime"> <label for="f-notime">태어난 시간을 모릅니다</label>
+    </div>
+
+    <button class="submit-btn" id="submit-btn">내 사주 리포트 만들기</button>
+    <p class="note">본 서비스는 재미로 즐기는 콘텐츠로, 절기 계산은 근사치를 사용합니다.</p>
+  </div>
+
+  <div class="loading-box" id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text" id="loading-text">사주팔자를 세우는 중...</div>
+  </div>
+</section>
+
+<section class="section" id="results">
+  <div class="section-head">
+    <div class="tag" id="res-tag">Your Saju Report</div>
+    <h2 id="res-title">사주 리포트</h2>
+  </div>
+
+  <div class="pillars-wrap">
+    <div class="pillars-table" id="pillars-table"></div>
+    <div class="elements-bar" id="elements-bar"></div>
+    <div class="elements-legend" id="elements-legend"></div>
+  </div>
+
+  <div class="report-grid" id="report-grid"></div>
+</section>
+
+<footer>
+  <div class="fbrand">淸明堂 청명당</div>
+  본 콘텐츠는 오락 목적으로 제공되며, 중요한 결정의 근거로 사용하지 마세요.
+</footer>
+
+<script>
+const STEMS = ["갑","을","병","정","무","기","경","신","임","계"];
+const STEM_HJ = ["甲","乙","丙","丁","戊","己","庚","辛","壬","癸"];
+const STEM_EL = ["목","목","화","화","토","토","금","금","수","수"];
+const BRANCHES = ["자","축","인","묘","진","사","오","미","신","유","술","해"];
+const BR_HJ = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+const BR_EL = ["수","토","목","목","토","화","화","토","금","금","토","수"];
+const EL_COLOR = {"목":"#4a7a56","화":"#b8432f","토":"#c9a227","금":"#b9b09a","수":"#3a6b8c"};
+const EL_HANJA = {"목":"木","화":"火","토":"土","금":"金","수":"水"};
+
+function sajuYear(y,m,d){ return (m<2 || (m===2 && d<4)) ? y-1 : y; }
+
+function monthIndex(year,month,day,cycleYear){
+  const anchors = [
+    [cycleYear,2,4],[cycleYear,3,6],[cycleYear,4,5],[cycleYear,5,6],[cycleYear,6,6],
+    [cycleYear,7,7],[cycleYear,8,8],[cycleYear,9,8],[cycleYear,10,8],[cycleYear,11,7],
+    [cycleYear,12,7],[cycleYear+1,1,6]
+  ];
+  const target = Date.UTC(year,month-1,day);
+  let idx = 0;
+  for(let i=0;i<anchors.length;i++){
+    const [ay,am,ad] = anchors[i];
+    if(Date.UTC(ay,am-1,ad) <= target) idx = i;
+  }
+  return idx; // 0=인 ... 11=축
+}
+
+function computeSaju(year,month,day,hour,hasTime){
+  const cycleYear = sajuYear(year,month,day);
+  const yIdx60 = ((cycleYear-4)%60+60)%60;
+  const yearStem = yIdx60%10, yearBranch = yIdx60%12;
+
+  const mIdx = monthIndex(year,month,day,cycleYear); // 0=인..11=축
+  const monthBranch = (mIdx+2)%12;
+  const yinStartTable = [2,4,6,8,0];
+  const monthStem = (yinStartTable[yearStem%5] + mIdx) % 10;
+
+  let effYear=year, effMonth=month, effDay=day;
+  if(hasTime && hour>=23){
+    const d = new Date(Date.UTC(year,month-1,day));
+    d.setUTCDate(d.getUTCDate()+1);
+    effYear=d.getUTCFullYear(); effMonth=d.getUTCMonth()+1; effDay=d.getUTCDate();
+  }
+  const diffDays = Math.round((Date.UTC(effYear,effMonth-1,effDay) - Date.UTC(1900,0,31))/86400000);
+  const dIdx60 = ((40+diffDays)%60+60)%60;
+  const dayStem = dIdx60%10, dayBranch = dIdx60%12;
+
+  let hourStem=null, hourBranch=null;
+  if(hasTime){
+    const adjHour = (hour+1)%24;
+    hourBranch = Math.floor(adjHour/2);
+    const ziStartTable = [0,2,4,6,8];
+    hourStem = (ziStartTable[dayStem%5] + hourBranch) % 10;
+  }
+
+  return {
+    year:{stem:yearStem, branch:yearBranch},
+    month:{stem:monthStem, branch:monthBranch},
+    day:{stem:dayStem, branch:dayBranch},
+    hour: hasTime ? {stem:hourStem, branch:hourBranch} : null
+  };
+}
+
+function elementCounts(pillars){
+  const counts = {"목":0,"화":0,"토":0,"금":0,"수":0};
+  const list = [pillars.year, pillars.month, pillars.day];
+  if(pillars.hour) list.push(pillars.hour);
+  list.forEach(p=>{
+    counts[STEM_EL[p.stem]]++;
+    counts[BR_EL[p.branch]]++;
+  });
+  return counts;
+}
+
+// UI: gender toggle
+document.querySelectorAll('#gender-group .radio-opt').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    document.querySelectorAll('#gender-group .radio-opt').forEach(o=>o.classList.remove('active'));
+    el.classList.add('active');
+  });
+});
+
+function renderPillars(pillars){
+  const cols = [
+    {label:'시주', p:pillars.hour},
+    {label:'일주', p:pillars.day},
+    {label:'월주', p:pillars.month},
+    {label:'연주', p:pillars.year},
+  ];
+  const table = document.getElementById('pillars-table');
+  table.innerHTML = '';
+  cols.forEach(c=>{
+    const col = document.createElement('div');
+    col.className = 'pillar-col';
+    if(!c.p){
+      col.innerHTML = `<div class="pillar-label">${c.label}</div>
+        <div class="pillar-cell"><div class="hj" style="color:#555">—</div></div>
+        <div class="pillar-cell"><div class="hj" style="color:#555">—</div></div>`;
+    } else {
+      const stemEl = STEM_EL[c.p.stem], brEl = BR_EL[c.p.branch];
+      col.innerHTML = `<div class="pillar-label">${c.label}</div>
+        <div class="pillar-cell" style="border-color:${EL_COLOR[stemEl]}55">
+          <div class="hj" style="color:${EL_COLOR[stemEl]}">${STEM_HJ[c.p.stem]}</div>
+          <div class="kr">${STEMS[c.p.stem]} · ${stemEl}(${EL_HANJA[stemEl]})</div>
+        </div>
+        <div class="pillar-cell" style="border-color:${EL_COLOR[brEl]}55">
+          <div class="hj" style="color:${EL_COLOR[brEl]}">${BR_HJ[c.p.branch]}</div>
+          <div class="kr">${BRANCHES[c.p.branch]} · ${brEl}(${EL_HANJA[brEl]})</div>
+        </div>`;
+    }
+    table.appendChild(col);
+  });
+}
+
+function renderElements(counts){
+  const total = Object.values(counts).reduce((a,b)=>a+b,0) || 1;
+  const bar = document.getElementById('elements-bar');
+  const legend = document.getElementById('elements-legend');
+  bar.innerHTML=''; legend.innerHTML='';
+  Object.keys(EL_COLOR).forEach(el=>{
+    const pct = (counts[el]/total*100).toFixed(0);
+    if(counts[el]>0){
+      const seg = document.createElement('div');
+      seg.style.background = EL_COLOR[el];
+      seg.style.width = pct+'%';
+      bar.appendChild(seg);
+    }
+    const li = document.createElement('div');
+    li.className='legend-item';
+    li.innerHTML = `<span class="legend-dot" style="background:${EL_COLOR[el]}"></span>${EL_HANJA[el]} ${el} · ${counts[el]}`;
+    legend.appendChild(li);
+  });
+}
+
+function pillarSummaryText(pillars, counts){
+  const fmt = p => p ? `${STEMS[p.stem]}(${STEM_HJ[p.stem]})${BRANCHES[p.branch]}(${BR_HJ[p.branch]})` : '미상';
+  return `연주: ${fmt(pillars.year)} / 월주: ${fmt(pillars.month)} / 일주: ${fmt(pillars.day)} / 시주: ${fmt(pillars.hour)}\n오행 분포: 목 ${counts['목']}, 화 ${counts['화']}, 토 ${counts['토']}, 금 ${counts['금']}, 수 ${counts['수']}`;
+}
+
+async function generateReport(name, gender, pillars, counts){
+  const summary = pillarSummaryText(pillars, counts);
+  const systemPrompt = `당신은 따뜻하고 통찰력 있는 사주 명리학자입니다. 아래 사주 정보를 바탕으로 개인화된 해석을 한국어로 작성하세요.
+반드시 아래 JSON 형식으로만 응답하고, 그 외 다른 텍스트나 코드블록 표시(백틱)는 절대 포함하지 마세요:
+{"total":"...","personality":"...","wealth":"...","love":"...","health":"...","year2026":"..."}
+각 항목은 3~4문장, 구체적이고 다정한 톤으로 작성하되 지나치게 단정적인 예언 대신 참고할 만한 조언처럼 서술하세요.`;
+
+  const userPrompt = `이름: ${name || '익명'}\n성별: ${gender}\n${summary}\n\n위 사주를 바탕으로 total(총운), personality(성격과 기질), wealth(재물운), love(애정운), health(건강운), year2026(2026년 신년운세)을 작성해줘.`;
+
+  const response = await fetch("/api/fortune", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ systemPrompt, userPrompt })
+  });
+  const data = await response.json();
+  if(!response.ok) throw new Error(data.error || 'AI 리포트 생성에 실패했습니다.');
+  const text = data.text || '';
+  const clean = text.replace(/```json|```/g,'').trim();
+  return JSON.parse(clean);
+}
+
+function renderReport(name, report){
+  const grid = document.getElementById('report-grid');
+  const cards = [
+    {tag:'총운', title:`${name ? name+'님의 ' : ''}전체적인 흐름`, text:report.total, wide:true},
+    {tag:'성격 · 기질', title:'타고난 성향', text:report.personality},
+    {tag:'재물운', title:'돈의 흐름', text:report.wealth},
+    {tag:'애정운', title:'인연과 관계', text:report.love},
+    {tag:'건강운', title:'몸과 마음', text:report.health},
+    {tag:'2026', title:'2026년 신년운세', text:report.year2026},
+  ];
+  grid.innerHTML = cards.map(c => `
+    <div class="report-card ${c.wide?'wide':''}">
+      <div class="rc-tag">${c.tag}</div>
+      <h4>${c.title}</h4>
+      <p>${c.text}</p>
+    </div>
+  `).join('');
+}
+
+document.getElementById('f-notime').addEventListener('change', e=>{
+  document.getElementById('f-time').disabled = e.target.checked;
+});
+
+document.getElementById('submit-btn').addEventListener('click', async ()=>{
+  const name = document.getElementById('f-name').value.trim();
+  const gender = document.querySelector('#gender-group .active').dataset.val;
+  const dateVal = document.getElementById('f-date').value;
+  const noTime = document.getElementById('f-notime').checked;
+  const timeVal = document.getElementById('f-time').value;
+
+  if(!dateVal){
+    alert('생년월일을 입력해주세요.');
+    return;
+  }
+  const [year,month,day] = dateVal.split('-').map(Number);
+  let hour = null, hasTime = false;
+  if(!noTime && timeVal){
+    hour = Number(timeVal.split(':')[0]);
+    hasTime = true;
+  }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('results').style.display = 'none';
+
+  const loadingMsgs = ['사주팔자를 세우는 중...','오행의 균형을 살펴보는 중...','연·월·일·시주를 짚어보는 중...','리포트를 정리하는 중...'];
+  let mi = 0;
+  const li = setInterval(()=>{ mi=(mi+1)%loadingMsgs.length; document.getElementById('loading-text').textContent = loadingMsgs[mi]; }, 1400);
+
+  try{
+    const pillars = computeSaju(year,month,day,hour,hasTime);
+    const counts = elementCounts(pillars);
+    renderPillars(pillars);
+    renderElements(counts);
+    document.getElementById('res-title').textContent = name ? `${name}님의 사주 리포트` : '나의 사주 리포트';
+
+    const report = await generateReport(name, gender, pillars, counts);
+    renderReport(name, report);
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('results').style.display = 'block';
+    document.getElementById('results').scrollIntoView({behavior:'smooth'});
+  } catch(err){
+    console.error(err);
+    document.getElementById('loading-text').textContent = err.message || '오류가 발생했습니다. 다시 시도해주세요.';
+    setTimeout(()=>{ document.getElementById('loading').style.display='none'; }, 2000);
+  } finally {
+    clearInterval(li);
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
+
+{
+  "name": "cheongmyeongdang-saju",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": { "dev": "vercel dev", "deploy": "vercel --prod" },
+  "engines": { "node": ">=20" }
+}
+
+# 청명당 AI 사주연구소 - Vercel 배포
+
+## 배포 방법
+1. 이 폴더를 GitHub 저장소에 업로드합니다.
+2. Vercel에서 **Add New → Project**를 선택하고 저장소를 Import합니다.
+3. Environment Variables에 아래 값을 추가합니다.
+   - `ANTHROPIC_API_KEY`: Anthropic Console에서 발급한 API 키
+   - `ANTHROPIC_MODEL`: `claude-sonnet-4-6` (필요 시 사용 가능한 모델명으로 변경)
+4. Deploy를 누릅니다.
+
+## 로컬 실행
+```bash
+npm install -g vercel
+vercel login
+vercel dev
+```
+
+`.env.local` 파일에 API 키를 넣어 로컬 테스트할 수 있습니다. `.env.local`은 GitHub에 올리지 마세요.
+
+## 구조
+- `index.html`: 프론트엔드 및 사주 계산
+- `api/fortune.js`: Anthropic API를 안전하게 호출하는 Vercel Serverless Function
+- API 키는 브라우저에 전달되지 않습니다.
+
+## 주의
+현재 절기 계산은 근사값입니다. 실제 서비스에서는 정밀 절기 데이터와 음양력 변환을 적용하세요.
+
+{
+  "functions": { "api/fortune.js": { "maxDuration": 30 } }
+}
